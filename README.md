@@ -1,47 +1,65 @@
-console_logger
-==============
+console_logger (c) 2014 Sam Caldwell 
+====================================
 
-Extending Node.JS console object with persistent logging
+	
+	The MIT License (MIT)
+	Copyright (c) 2014 Sam Caldwell.
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
 
-----------
-Objective:
-----------
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.	
 
-  (1) When require()'d into a project, this module (single JS file) should overload node.js console.log() to allow existing functionality while also writing to a persistent log file (
-  
-    
-    if(console.persistence.on == true and typeof(persistence.logFile)==string and persistence.logFile.length>0)
-    
-  
-  (2) When require()'d into a project, this module (single JS file) should overload node.js console.err() to allow existing functionlity while also writing to a persistent log file (
-  
-  
-    if(console.persistence.on==true and typeof(persistence.errorFile)==string and persistence.errorFile.length>0)
-    
-  
-  (3) Add functionality to console whereby the developer can control the console's persistence by turning on persistent logging (console.persistence.on and console.persistence.off).
-  
-  
-  
-  (4) Add functionality to console whereby the developer can define log files for stdout and stderr in realtime (e.g. by defining console.persistence.log and console.persistence.error.
-  
-  
-  
--------------------
-console.persistence
--------------------
+	OBJECTIVE: 
+		To extend the Node.JS console object with file-write capabilities which will
+		allow existing code to be retrofit with logging capabilities on stdout and
+		stderr with little to no code re-write.
+		
+	HOW TO INSTALL:
+		In your code, before you call console.log() or console.error(), add the following
+		line:
+				require('console_logger.js')();
+		
+		This will load the console_logger, while the second pair of parenthesis () will
+		invoke the console_logger module to overload console.log.
+		
+	HOW TO USE:
+		Turn on the persistent logger:
+	
+			console.persistence.isActive=true;
 
-root.console.persistence={
-
-  var state:false,
-  var logFile:'',
-  var errorFile:'',
-
-  on:<Read-only Property>,
-  off:<Read-only Property>,
-
-  log:function(messageString){/*Writes to logFile*/},
-  error:function(messageString){/*Writes to errorFile*/}
-  
-  
-}
+		Turn off the persistent logger:
+		
+			console.persistence.isActive=false;
+			
+		Define the log file:
+		
+			console.persistence.logFile='myLogFile.log';
+			console.persistence.errorFile='myErrorFile.log';
+			
+		If you want to separate one source from another, you can:
+		
+			console.persistence.source='myLogSourceIdentifier';
+	
+	WHAT NEEDS TO HAPPEN:
+	
+		(1) I would like to integrate this further into console so that I can create
+		    new instances of the overloaded console object, with each being created for
+		    a unique source.
+		    
+		(2) I would also like to just require() the file rather than require())().
+		
+		
